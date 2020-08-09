@@ -1656,8 +1656,20 @@ Only available with PDF Tools."
                                                          (if (and item-subject item-contents) "\n" "")
                                                          (or item-contents ""))))))
 
-                     (push (vector (format "%s on page %d" name page) (cons page top) 'inside contents)
+                    ;; (push (vector (format "%s on page %d" name page) (cons page top) 'inside contents)
+                    ;;       output-data)))))
+
+                    (push (vector "Contents" (cons page top) 'inside contents)
                            output-data)))))
+                     ;; (push (vector
+                     ;;        ;(format "%s on page %d" name page)
+                     ;;        (car contents)
+
+                     ;;        ;(cons page top)
+                     ;;        ;'inside contents
+                     ;;         (cons page top)
+                     ;;        )
+                     ;;       output-data)))))
 
              (dolist (page pages-with-links)
                (let ((links (pdf-info-pagelinks page))
@@ -1722,18 +1734,26 @@ Only available with PDF Tools."
                  (setq last-absolute-level (+ top-level relative-level)
                        level last-absolute-level))
 
-               (org-noter--insert-heading level title)
+               ;; (org-noter--insert-heading level title)
 
-               (when location
-                 (org-entry-put nil org-noter-property-note-location (org-noter--pretty-print-location location)))
+               ;; (when location
+               ;;   (org-entry-put noter nil-org-noter-property-note (location-org--pretty-print-when location)))
 
-               (when org-noter-doc-property-in-notes
-                 (org-entry-put nil org-noter-property-doc-file (org-noter--session-property-text session))
-                 (org-entry-put nil org-noter--property-auto-save-last-location "nil"))
+              (org-noter--insert-heading level title nil location)
+
+
+               ;; (location org-noter-doc-property-in-notes
+               ;;   (org-entry-put nil org-noter-property-doc-file (org-noter--session-property-text session))
+               ;;   (org-entry-put nil org-noter--property-auto-save-last-location "nil"))
 
                (when (car contents)
-                 (org-noter--insert-heading (1+ level) "Contents")
-                 (insert (car contents)))
+                 ;;(org-noter--insert-heading (1+ level) "Contents")
+                 ;;(org-noter--insert-heading (1+ level) (car contents))
+                 (insert "#+begin_quote\n")
+
+                 (insert (replace-regexp-in-string "\n" " " (car contents)))
+                 (insert "\n#+end_quote")
+                 )
                (when (cdr contents)
                  (org-noter--insert-heading (1+ level) "Comment")
                  (insert (cdr contents)))))
