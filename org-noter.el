@@ -1659,7 +1659,7 @@ Only available with PDF Tools."
                     ;; (push (vector (format "%s on page %d" name page) (cons page top) 'inside contents)
                     ;;       output-data)))))
 
-                    (push (vector (car contents) (cons page top) 'inside nil)
+                    (push (vector "Contents" (cons page top) 'inside contents)
                            output-data)))))
                      ;; (push (vector
                      ;;        ;(format "%s on page %d" name page)
@@ -1747,9 +1747,12 @@ Only available with PDF Tools."
                ;;   (org-entry-put nil org-noter--property-auto-save-last-location "nil"))
 
                (when (car contents)
-                 ;; (org-noter--insert-heading (1+ level) "Contents")
-                 (org-noter--insert-heading (1+ level) (car contents))
-                 ;; (insert (car contents))
+                 ;;(org-noter--insert-heading (1+ level) "Contents")
+                 ;;(org-noter--insert-heading (1+ level) (car contents))
+                 (insert "#+begin_quote\n")
+
+                 (insert (replace-regexp-in-string "\n" " " (car contents)))
+                 (insert "\n#+end_quote")
                  )
                (when (cdr contents)
                  (org-noter--insert-heading (1+ level) "Comment")
